@@ -55,22 +55,50 @@ class Widgets():
     return dbutils.widgets.text("Error Message","","errorMessage")
   
   def getPlatformFamily(self):
-    return dbutils.widgets.get("Platform Family")
-  
+    try:
+      return dbutils.widgets.get("Platform Family")
+    except:
+      print("Warning: Could not get Platform Family widget")
+      return ""
+
   def getStackType(self):
-    return dbutils.widgets.get("Stack")
-  
+    try:
+      return dbutils.widgets.get("Stack")
+    except:
+      print("Warning: Could not get Stack widget")
+      return ""
+
   def getEventType(self):
-    return dbutils.widgets.get("Event")
-  
+    try:
+      return dbutils.widgets.get("Event")
+    except:
+      print("Warning: Could not get Event widget")
+      return ""
+
   def getOrgType(self):
-    return dbutils.widgets.get("Originator")
-  
+    try:
+      return dbutils.widgets.get("Originator")
+    except:
+      print("Warning: Could not get Originator widget")
+      return ""
+
   def getStartDate(self):
-    return dbutils.widgets.get("Start Date")
-  
+    try:
+      return dbutils.widgets.get("Start Date")
+    except:
+      print("Warning: Could not get Start Date widget")
+      return ""
+
   def getEndDate(self):
-    return dbutils.widgets.get("End Date")
-  
+    try:
+      return dbutils.widgets.get("End Date")
+    except:
+      print("Warning: Could not get End Date widget")
+      return ""
+
   def getErrorMessage(self):
-    return dbutils.widgets.get("Error Message")
+    try:
+      return dbutils.widgets.get("Error Message")
+    except:
+      print("Warning: Could not get Error Message widget")
+      return ""

@@ -22,33 +22,66 @@ class Common_Utils(Spark):
     self.products = []
 
   def combine_ref(self,initial_df):
+    if initial_df is None:
+      print("Error: Initial DataFrame is None in combine_ref")
+      return None
+
     try:
       cdf_pmr_ref = Spark.spark.sql("select * from ref_enrich.cdf_pmr").select(col("product_number"), col("platform_subset_reporting_name").alias("platform_family"))
+      if cdf_pmr_ref is None:
+        print("Warning: Failed to load cdf_pmr reference table")
+        return initial_df
+
       rdma_prod_ref = Spark.spark.sql("select * from ref_enrich.rdma_product_ref").select(col("base_prod_nr").alias("product_number"), col("pltfrm_subset_nm").alias("platform_family"))
+      if rdma_prod_ref is None:
+        print("Warning: Failed to load rdma_product_ref reference table")
+        return initial_df
+
       tri_printer_ref = Spark.spark.sql("select * from ref_enrich.tri_printer_ref").select(col("printer_product_number").alias("product_number"), col("printer_platform_name").alias("platform_family"))
+      if tri_printer_ref is None:
+        print("Warning: Failed to load tri_printer_ref reference table")
+        return initial_df
+
       combined_ref = cdf_pmr_ref.union(rdma_prod_ref).union(tri_printer_ref).groupBy("product_number").agg(first(col("platform_family")).alias("platform_family"))
-      
-      if "originator.originatorDetail.productNumber" in self.find_column_paths(initial_df,"productNumber"):
-        return initial_df.join(combined_ref, col("originator.originatorDetail.productNumber").eqNullSafe(col("product_number")))
+      if combined_ref is None:
+        print("Warning: Failed to create combined reference table")
+        return initial_df
+
+      product_paths = self.find_column_paths(initial_df,"productNumber")
+      if product_paths and "originator.originatorDetail.productNumber" in product_paths:
+        result_df = initial_df.join(combined_ref, col("originator.originatorDetail.productNumber").eqNullSafe(col("product_number")))
       else:
-        return initial_df.join(combined_ref, col("originator.originatorDetail.modelNumber").eqNullSafe(col("product_number")))
+        result_df = initial_df.join(combined_ref, col("originator.originatorDetail.modelNumber").eqNullSafe(col("product_number")))
+
+      return result_df if result_df is not None else initial_df
     except Exception as e:
       print(f"Exception Occurs in combine_ref: {e}")
+      return initial_df
 
   def find_column_paths(self, df, col_name):
-      # Recursively search for the column in the schema
-      def search_schema(schema, path_so_far):
-          paths = []
-          for field in schema.fields:
-              if field.name == col_name:
-                  paths.append(path_so_far + [col_name])
-              elif isinstance(field.dataType, StructType):
-                  sub_paths = search_schema(field.dataType, path_so_far + [field.name])
-                  if sub_paths:
-                      paths.extend(sub_paths)
-          return paths if paths else []
-      # Call the search function with the schema of the DataFrame
-      return ['.'.join(path) for path in search_schema(df.schema, [])]
+      if df is None:
+          print(f"Error: DataFrame is None in find_column_paths for column '{col_name}'")
+          return []
+
+      try:
+          # Recursively search for the column in the schema
+          def search_schema(schema, path_so_far):
+              if schema is None:
+                  return []
+              paths = []
+              for field in schema.fields:
+                  if field.name == col_name:
+                      paths.append(path_so_far + [col_name])
+                  elif isinstance(field.dataType, StructType):
+                      sub_paths = search_schema(field.dataType, path_so_far + [field.name])
+                      if sub_paths:
+                          paths.extend(sub_paths)
+              return paths if paths else []
+          # Call the search function with the schema of the DataFrame
+          return ['.'.join(path) for path in search_schema(df.schema, [])]
+      except Exception as e:
+          print(f"Error in find_column_paths for column '{col_name}': {str(e)}")
+          return []
 
   def group_by_product_number_and_firmware_version(self, df, column_name ,nullCompare:bool=True):
       # Select the relevant columns from the reference table
@@ -158,8 +191,20 @@ class Common_Utils(Spark):
     return newDf
 
   def get_sampleFw(self,df):
-    fwVer =df.filter(col("originator.originatorDetail.firmwareVersion").isNotNull()).select("originator.originatorDetail.firmwareVersion").first()[0]
-    return fwVer
+    if df is None:
+      print("Error: DataFrame is None in get_sampleFw")
+      return None
+
+    try:
+      fw_result = df.filter(col("originator.originatorDetail.firmwareVersion").isNotNull()).select("originator.originatorDetail.firmwareVersion").first()
+      if fw_result is not None and len(fw_result) > 0:
+        return fw_result[0]
+      else:
+        print("Warning: No firmware version found in data")
+        return None
+    except Exception as e:
+      print(f"Error in get_sampleFw: {str(e)}")
+      return None
 
   def getCDMpath(self,originator,event,env):
     try:
@@ -263,17 +308,41 @@ class Common_Utils(Spark):
 
   """loadDf(): Will return completed DF specifically for the attributes choose from widgets"""
   def loadDf(self):
-    originator = self.widget.getOrgType()
-    event = self.widget.getEventType()
-    env = self.widget.getStackType()
     try:
+      originator = self.widget.getOrgType()
+      event = self.widget.getEventType()
+      env = self.widget.getStackType()
+
+      if not originator or not event or not env:
+        print("Error: Missing required widget values (originator, event, or environment)")
+        return None
+
       df_path = self.getCDMpath(originator,event,env)
+      if not df_path:
+        print("Error: Failed to construct data path")
+        return None
+
       startDate = self.widget.getStartDate()
       endDate = self.widget.getEndDate()
+
+      if not startDate or not endDate:
+        print("Error: Missing start date or end date")
+        return None
+
       print(f'Investigated time range: {startDate} to {endDate}')
-      df = etl_utils.sage.Queue(df_path).load(start_date=startDate, end_date=endDate) 
-      df = self.filtered_forPlatformFamilies(df).withColumn("recieveDate", concat(col("year"), lit("-"), col("month"), lit("-"), col("day")).cast("date"))
-      return df
+
+      df = etl_utils.sage.Queue(df_path).load(start_date=startDate, end_date=endDate)
+      if df is None:
+        print(f"Error: Failed to load data from path: {df_path}")
+        return None
+
+      filtered_df = self.filtered_forPlatformFamilies(df)
+      if filtered_df is None:
+        print("Error: Failed to filter data for platform families")
+        return None
+
+      final_df = filtered_df.withColumn("recieveDate", concat(col("year"), lit("-"), col("month"), lit("-"), col("day")).cast("date"))
+      return final_df
     except originatorError as e:
       print(f"Error: {e.message} given value: {e.value} Given Originator does not exits in this template.(constants.py)")
     except eventError as e:

@@ -335,30 +335,30 @@ class Utils(Common_Utils):
         errorDf = errorDf.filter(col("ParsedRawJson.event.filter.filterType")=="inclusion")
       else:
         print("Note: All Events Found With FilterType/Filter field as Null\n")
-
-    errorDf = errorDf.withColumn(
-      "error_printer",
-      struct(
-        col("originator.originatorDetail.deviceUuid").alias("deviceUuid"),
-        col("originator.originatorDetail.firmwareVersion").alias("firmwareVersion"),
-        col("dateTime").alias("dateTime"),
-        col("originator.originatorDetail.currentDateTime").alias("originator_originatorDetail_currentDateTime"),
-        col("event.dateTime").alias("event_dateTime"),
-        col("eventMeta.eventMetaDetail.dateTime").alias("eventMeta_eventMetaDetail_dateTime")
-      )
-    ).withColumnRenamed("rawJson","errorPayload").select("error_printer","errorPayload")
+        
+      errorDf = errorDf.withColumn(
+        "error_printer",
+        struct(
+          col("originator.originatorDetail.deviceUuid").alias("deviceUuid"),
+          col("originator.originatorDetail.firmwareVersion").alias("firmwareVersion"),
+          col("dateTime").alias("dateTime"),
+          col("originator.originatorDetail.currentDateTime").alias("originator_originatorDetail_currentDateTime"),
+          col("event.dateTime").alias("event_dateTime"),
+          col("eventMeta.eventMetaDetail.dateTime").alias("eventMeta_eventMetaDetail_dateTime")
+        )
+      ).withColumnRenamed("rawJson","errorPayload").select("error_printer","errorPayload")
     
-    non_errorDf = non_errorDf.filter(col("event.filter.filterType")=="inclusion")\
-      .withColumn("printer",struct(
-        col("originator.originatorDetail.deviceUuid").alias("deviceUuid"),
-        col("originator.originatorDetail.firmwareVersion").alias("firmwareVersion"),
-        col("originator.originatorDetail.currentDateTime").alias("originator_originatorDetail_currentDateTime"),
-        col("event.dateTime").alias("event_dateTime"),
-        col("eventMeta.eventMetaDetail.dateTime").alias("eventMeta_eventMetaDetail_dateTime")
-      )
-    )\
-    .filter((col("eventDetailError").isNull())&(col("originatorDetailError").isNull())&(col("shadowEventNotificationError").isNull()))\
-    .withColumn("payload",struct(col("event"),col("eventMeta"),col("originator"))).select("printer","payload")
+      non_errorDf = non_errorDf.filter(col("event.filter.filterType")=="inclusion")\
+        .withColumn("printer",struct(
+          col("originator.originatorDetail.deviceUuid").alias("deviceUuid"),
+          col("originator.originatorDetail.firmwareVersion").alias("firmwareVersion"),
+          col("originator.originatorDetail.currentDateTime").alias("originator_originatorDetail_currentDateTime"),
+          col("event.dateTime").alias("event_dateTime"),
+          col("eventMeta.eventMetaDetail.dateTime").alias("eventMeta_eventMetaDetail_dateTime")
+        )
+      )\
+      .filter((col("eventDetailError").isNull())&(col("originatorDetailError").isNull())&(col("shadowEventNotificationError").isNull()))\
+      .withColumn("payload",struct(col("event"),col("eventMeta"),col("originator"))).select("printer","payload")
 
       expectedPayloadDf = errorDf.join(non_errorDf,(non_errorDf["printer.deviceUuid"]==errorDf["error_printer.deviceUuid"])&(non_errorDf["printer.firmwareVersion"]==errorDf["error_printer.firmwareVersion"])&((non_errorDf["printer.event_dateTime"]==errorDf["error_printer.event_dateTime"])|(non_errorDf["printer.originator_originatorDetail_currentDateTime"]==errorDf["error_printer.originator_originatorDetail_currentDateTime"])|(non_errorDf["printer.eventMeta_eventMetaDetail_dateTime"]==errorDf["error_printer.eventMeta_eventMetaDetail_dateTime"])),"inner")
 

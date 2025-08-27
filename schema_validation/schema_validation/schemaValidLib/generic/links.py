@@ -1,0 +1,17 @@
+important_links={
+  "Template Documentation" : "https://hp-my.sharepoint.com/:w:/r/personal/amrit_agarwal_hp_com/_layouts/15/Doc.aspx?sourcedoc=%7B69868CBF-15A0-4402-988F-005ACD1D83D9%7D&file=SchemaValidationDocumentation.docx&wdLOR=c02F9C675-C000-4983-A20C-CB03FCAD6766&fromShare=true&action=default&mobileredirect=true",
+  "Schema Registry" : "https://schemaregistry.cso-hp.com/",
+  "Rainbow Chart" : "https://rdmahpi.inc.hpicorp.net/Browse.aspx?Screen=BASE_PRODUCT",
+  "Telemetry Behaviour" : "https://hp.sharepoint.com/:x:/r/sites/DataOSOperations/_layouts/15/doc2.aspx?sourcedoc=%7B13EEC21B-D266-4822-B2AB-24BBAF5E0BBE%7D&file=Telemetry%20Behavior%20Across%20Products.xlsx&nav=MTVfezQyOUM2OTM4LTg3QjYtNEJDQy05QTZGLTA0NTc2OTA2MjMwQX0&action=default&mobileredirect=true",
+  "Event Categories" : "https://rndwiki.inc.hpicorp.net/confluence/pages/viewpage.action?spaceKey=CDM&title=eventDetail+Categories",
+  "PSUJ Mappings" : "https://github.azc.ext.hp.com/cirrostratus/dps_cdm_dataproducts/blob/dev_integration/generic_history/config/psu_inter/psu_inter_mappings_ink.csv",
+  "Silver Mappings" : "https://rndwiki.inc.hpicorp.net/confluence/pages/viewpage.action?pageId=1180445576#CDMCustomDataProducts(StandardSilverDataProducts)-CustomDataProductsTableStructure",
+  "CDM Dictionary" : "https://rndwiki.inc.hpicorp.net/confluence/display/SuppliesBigData/CDM+Generated+Data+Dictionaries",
+  "Telemetry List" : "https://rndwiki.inc.hpicorp.net/confluence/pages/viewpage.action?spaceKey=CDM&title=Telemetry+Event+List+by+Product",
+  "CDM Consistency Dashboard" : "https://rndwiki.inc.hpicorp.net/confluence/display/SuppliesBigData/CDM+Generated+Data+Dictionaries",
+  "Bug Creation Document" : "https://hp-my.sharepoint.com/:w:/r/personal/garrett_bond_hp_com/_layouts/15/Doc.aspx?sourcedoc=%7BC87D8A53-6278-40AF-BB2B-3CF3D13DD01E%7D&file=Template%20for%20Description%20Field%20in%20Tickets%20DOSDP%20and%20FW%20(Training).docx&action=default&mobileredirect=true",
+  "Description Field Document" : "https://hp-my.sharepoint.com/:w:/p/garrett_bond/EUCDjB0xvjhOstb2cT0qT9IBOF0lpTfNf7RqI6TRKUMO0w?e=oaG69m",
+  "CDM Fleet Supply Info" : "https://hp.sharepoint.com/:x:/r/sites/CDMTelemetry/_layouts/15/Doc.aspx?sourcedoc=%7B506CC437-B4CC-40D4-A660-533720F4BFB3%7D&file=CDMFleetSupplyInfo.xlsx&action=default&mobileredirect=true",
+  "Data Products Catalogs" : "https://hp.sharepoint.com/teams/dataplatform/Lists/DataOSDataProductCatalog/AllItems.aspx?env=WebViewList&xsdata=MDV8MDF8fGY0ZTljMmUxN2ZiODRlNmNkNzJmMDhkYjM0OTIxYmY2fGNhNzk4MWEyNzg1YTQ2M2RiODJhM2RiODdkZmMzY2U2fDB8MHw2MzgxNjE1NzQzNDIwODg0OTV8VW5rbm93bnxWR1ZoYlhOVFpXTjFjbWwwZVZObGNuWnBZMlY4ZXlKV0lqb2lNQzR3TGpBd01EQWlMQ0pRSWpvaVYybHVNeklpTENKQlRpSTZJazkwYUdWeUlpd2lWMVFpT2pFeGZRPT18MXxNVFk0TURVMk1EWXpNekkwT1RzeE5qZ3dOVFl3TmpNek1qUTVPekU1T2pWaE5tTTVZMlUyTFdVMk9HWXRORFEyWWkxaFlURm1MV1E1T0dSaVpqWXdZV0UwTlY5bU5ERmlPVGMzT1Mwd09EVmxMVFEwTWpZdFltVmtNQzAwTTJNMk5EWmtZVEZrWVRkQWRXNXhMbWRpYkM1emNHRmpaWE09fDRiNTMyN2JjZjM4MzQ1YTJkNzJmMDhkYjM0OTIxYmY2fDg2MjliNWYyMjQ5NTQ5Y2Y4ZDlmNTRmMDRmYmY5OTU1&sdata=MEowYUU3VHZFT29sRGZQd3dPWG1DeWcrZ1lhUHVneUJzeXBtKzR2aUlUbz0%3D&ovuser=ca7981a2-785a-463d-b82a-3db87dfc3ce6%2Cjoshua%2Eyim%40hp%2Ecom&OR=Teams-HL&CT=1680560637520&clickparams=eyJBcHBOYW1lIjoiVGVhbXMtRGVza3RvcCIsIkFwcFZlcnNpb24iOiIyNy8yMzAzMDUwMTExMCIsIkhhc0ZlZGVyYXRlZFVzZXIiOmZhbHNlfQ%3D%3D",
+  "POC Document" : "https://hp-my.sharepoint.com/:w:/r/personal/ranjith_kumar_s_hp_com/Documents/Microsoft%20Teams%20Chat%20Files/POC.docx?d=w9143242fe3f04c029f3f13c2a951c64f&csf=1&web=1&e=44ibPh"
+}

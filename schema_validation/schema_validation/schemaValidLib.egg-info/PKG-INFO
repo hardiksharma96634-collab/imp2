@@ -1,0 +1,10 @@
+Metadata-Version: 2.1
+Name: schemaValidLib
+Version: 2024.10.10.13.57
+Summary: schema validation lib wheel file for DataOS Data Products for bronze data
+Home-page: https://databricks.com
+Author: ['riya-talreja', 'amrit-agarwal']
+Author-email: ['riya.talreja@hp.com', 'amrit.agarwal@hp.com']
+Requires-Dist: setuptools
+Requires-Dist: pyspark
+Requires-Dist: markdown
